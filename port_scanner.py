@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 from scapy.all import IP, ICMP, sr1, TCP, UDP, sr
 import os
 
+# convert the hostname to an IP address
 def resolve_target(target):
     try:
         return socket.gethostbyname(target)
@@ -13,17 +14,22 @@ def resolve_target(target):
         print("Error: Invalid hostname.")
         return None
 
+# check if the target is alive
 def is_alive(ip):
     icmp_packet = IP(dst=ip)/ICMP()
     resp = sr1(icmp_packet, timeout=1, verbose=0)
     return resp is not None
 
+# get the list of ports to scan based on the mode
+# known ports are 0-1023, all ports are 0-65535
 def get_ports(mode):
     if mode == "known":
         return list(range(0, 1024))
     else:
         return list(range(0, 65536))
 
+# scan the target using different methods
+# connect scan
 def scan_connect(ip, port):
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -39,6 +45,7 @@ def scan_connect(ip, port):
     finally:
         sock.close()
 
+# SYN scan
 def scan_syn(ip, port):
     pkt = IP(dst=ip)/TCP(dport=port, flags="S")
     resp = sr1(pkt, timeout=1, verbose=0)
@@ -47,6 +54,7 @@ def scan_syn(ip, port):
     else:
         return port, "closed"
 
+# UDP scan
 def scan_udp(ip, port):
     pkt = IP(dst=ip)/UDP(dport=port)
     resp = sr1(pkt, timeout=1, verbose=0)
@@ -57,6 +65,7 @@ def scan_udp(ip, port):
     else:
         return port, "unknown"
 
+# worker function to handle threading
 def worker(ip, port, mode):
     print(".", end="", flush=True)
     if mode == "connect":
@@ -69,6 +78,7 @@ def worker(ip, port, mode):
         return p, s, ""
     return port, "error", ""
 
+# parse arguments and run the scan
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("target", help="Target IP or hostname")
@@ -96,6 +106,7 @@ def main():
 
     start_time = time.time()
     results = []
+    # set the maximum number of threads to 500 or 10 times the number of CPU cores
     max_threads = min(500, (os.cpu_count() or 4) * 10)
     with ThreadPoolExecutor(max_workers=max_threads) as executor:
         futures = [executor.submit(worker, ip, port, args.mode) for port in ports]
