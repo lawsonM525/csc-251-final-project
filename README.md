@@ -1,3 +1,4 @@
 # csc-251-final-project
-List of file for our project: port_scanner.py
-Instructions on how to run your project: use command like "python port_scanner.py glasgow.smith.edu -mode connect -order order -ports known".
+group member: Malaz, Quinn, Michelle
+List of file for our project: port_scanner.py, contribution.txt, README.md, challenge.txt
+Instructions on how to run our project: use command like "python port_scanner.py glasgow.smith.edu -mode connect -order order -ports known".
