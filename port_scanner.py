@@ -4,6 +4,7 @@ import time
 import random
 from concurrent.futures import ThreadPoolExecutor
 from scapy.all import IP, ICMP, sr1, TCP, UDP, sr
+import os
 
 def resolve_target(target):
     try:
@@ -11,6 +12,7 @@ def resolve_target(target):
     except socket.gaierror:
         print("Error: Invalid hostname.")
         return None
+
 
 def is_alive(ip):
     icmp_packet = IP(dst=ip)/ICMP()
@@ -95,7 +97,8 @@ def main():
 
     start_time = time.time()
     results = []
-    with ThreadPoolExecutor(max_workers=100) as executor:
+    max_threads = min(500, (os.cpu_count() or 4) * 10)
+    with ThreadPoolExecutor(max_workers=max_threads) as executor:
         futures = [executor.submit(worker, ip, port, args.mode) for port in ports]
         for future in futures:
             results.append(future.result())
@@ -109,3 +112,4 @@ def main():
             except:
                 service = "Unknown"
             print(f"Port {port}: {status} - {service} - {banner}")
+main()
