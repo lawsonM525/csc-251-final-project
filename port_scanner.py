@@ -13,7 +13,6 @@ def resolve_target(target):
         print("Error: Invalid hostname.")
         return None
 
-
 def is_alive(ip):
     icmp_packet = IP(dst=ip)/ICMP()
     resp = sr1(icmp_packet, timeout=1, verbose=0)
@@ -112,4 +111,6 @@ def main():
             except:
                 service = "Unknown"
             print(f"Port {port}: {status} - {service} - {banner}")
-main()
+
+if __name__ == "__main__":
+    main()
