@@ -36,12 +36,12 @@ def scan_connect(ip, port):
         sock.settimeout(0.5)
         result = sock.connect_ex((ip, port))
         if result == 0:
-            try:
-                banner = sock.recv(1024).decode().strip()
-            except:
-                banner = "No banner"
-            return port, "open", banner
-        return port, "closed", ""
+            # try:
+            #     banner = sock.recv(1024).decode().strip()
+            # except:
+            #     banner = "No banner"
+            return port, "open"
+        return port, "closed"
     finally:
         sock.close()
 
@@ -71,12 +71,10 @@ def worker(ip, port, mode):
     if mode == "connect":
         return scan_connect(ip, port)
     elif mode == "syn":
-        p, s = scan_syn(ip, port)
-        return p, s, ""
+        return scan_syn(ip, port)
     elif mode == "udp":
-        p, s = scan_udp(ip, port)
-        return p, s, ""
-    return port, "error", ""
+        return scan_udp(ip, port)
+    return port, "error"
 
 # parse arguments and run the scan
 def main():
@@ -106,8 +104,8 @@ def main():
 
     start_time = time.time()
     results = []
-    # set the maximum number of threads to 500 or 10 times the number of CPU cores
-    max_threads = min(500, (os.cpu_count() or 4) * 10)
+    # set the maximum number of threads to 500 or 20 times the number of CPU cores
+    max_threads = min(500, (os.cpu_count() or 4) * 20)
     with ThreadPoolExecutor(max_workers=max_threads) as executor:
         futures = [executor.submit(worker, ip, port, args.mode) for port in ports]
         for future in futures:
@@ -115,13 +113,13 @@ def main():
     print("\n\nScan complete.")
     print(f"Time taken: {round(time.time() - start_time, 2)} seconds")
     print("\nOpen Ports:")
-    for port, status, banner in results:
+    for port, status in results:
         if status == "open" or status == "open/filtered":
             try:
                 service = socket.getservbyport(port)
             except:
                 service = "Unknown"
-            print(f"Port {port}: {status} - {service} - {banner}")
+            print(f"Port {port}: {status} - {service}")
 
 if __name__ == "__main__":
     main()
