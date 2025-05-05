@@ -4,15 +4,15 @@
 We implement a port scanning tool that can perform various types of network scans including connect scan, SYN scan, and UDP scan.
 
 ## Team Members
-- Malaz
-- Quinn
-- Michelle
+- Malaz Solaiman
+- Quinn He
+- Michelle Lawson
 
 ## Project Files
 - `port_scanner.py` - Main scanning tool
 - `contribution.md` - Team contributions
 - `README.md` - This documentation
-- `challenge.md` - Challenges we faced
+- `challenges.md` - Challenges we faced
 
 ## Usage Instructions
 Run the tool using the following command format:

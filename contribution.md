@@ -1,1 +1,16 @@
-Quinn developed the initial skeleton of the project, beginning with target validation to ensure it was both valid and active. She also implemented the connect scan functionality. Malaz contributed the SYN scan, refined the main function, and tested the output using a known target. Michelle implemented the UDP scan and handled the multithreading logic. She was also responsible for writing the project documentation.
+# Team Contributions
+
+## Quinn
+- Developed the initial skeleton of the project
+- Implemented target validation to ensure targets were both valid and active
+- Created the connect scan functionality
+
+## Malaz
+- Implemented the SYN scan functionality
+- Refined the main function
+- Tested the output using known targets
+
+## Michelle
+- Implemented the UDP scan functionality
+- Handled the multithreading logic
+- Wrote the project documentation (hi 🫶)
