@@ -1,0 +1,3 @@
+"One early challenge was structuring the skeleton code. Before any scanning logic could be implemented, we had to decide how to break the program into logical components, what each function’s responsibility should be, and how data would flow between them. This required careful planning to avoid redundancy and ensure flexibility across different scan modes (connect, SYN, UDP). We resolved this by first outlining the program’s major tasks — such as resolving the target, checking liveness, choosing ports, and scanning — and then assigning each to a modular function. This modular design made the codebase cleaner, easier to debug, and more maintainable."
+- Quinn
+
