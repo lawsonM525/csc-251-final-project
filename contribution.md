@@ -13,4 +13,4 @@
 ## Michelle
 - Implemented the UDP scan functionality
 - Handled the multithreading logic
-- Wrote the project documentation (hi 🫶)
+- Wrote the project documentation
